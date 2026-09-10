@@ -22,8 +22,8 @@ public class SeedData {
             gameStmt.executeBatch();
 
             String[] genres = {"RPG", "Action", "Horror", "MMORPG"};
-            String genreSQL = "INSERT INTO genres (name) VALUES (?)";
-            PreparedStatement genreStmt = conn.prepareStatement(genreSQL);
+            String genreSql = "INSERT INTO genres (name) VALUES (?)";
+            PreparedStatement genreStmt = conn.prepareStatement(genreSql);
             for (String genre : genres) {
                 genreStmt.setString(1, genre);
                 genreStmt.addBatch();
@@ -31,14 +31,44 @@ public class SeedData {
             genreStmt.executeBatch();
 
             String[] platforms = {"Xbox", "PC", "Playstation", "Nintendo"};
-            String platformSQL = "INSERT INTO platforms (name) VALUES (?)";
-            PreparedStatement platformStmt = conn.prepareStatement(platformSQL);
+            String platformSql = "INSERT INTO platforms (name) VALUES (?)";
+            PreparedStatement platformStmt = conn.prepareStatement(platformSql);
             for (String platform : platforms) {
                 platformStmt.setString(1, platform);
                 platformStmt.addBatch();
             }
 
             platformStmt.executeBatch();
+
+            String gamesGenreSql = "INSERT INTO games_genres (game_id, genre_id) VALUES (?, ?)";
+            PreparedStatement gamesGenreStmt = conn.prepareStatement(gamesGenreSql);
+
+            gamesGenreStmt.setInt(1, 1); // Silksong
+            gamesGenreStmt.setInt(2, 2); // Action
+            gamesGenreStmt.addBatch();
+
+            gamesGenreStmt.setInt(1, 2); // Elden Ring
+            gamesGenreStmt.setInt(2, 1); // RPG
+            gamesGenreStmt.addBatch();
+
+            gamesGenreStmt.setInt(1, 2); // Elden Ring
+            gamesGenreStmt.setInt(2, 2); // Action
+            gamesGenreStmt.addBatch();
+
+            gamesGenreStmt.executeBatch();
+
+            String gamePlatformSql = "INSERT INTO games_platforms (game_id, platform_id) VALUES (?, ?)";
+            PreparedStatement gamePlatformStmt = conn.prepareStatement(gamePlatformSql);
+
+            gamePlatformStmt.setInt(1, 1); // Silksong
+            gamePlatformStmt.setInt(2, 4); // Nintendo
+            gamePlatformStmt.addBatch();
+
+            gamePlatformStmt.setInt(1, 2); // Elden Ring
+            gamePlatformStmt.setInt(2, 2); // PC
+            gamePlatformStmt.addBatch();
+
+            gamePlatformStmt.executeBatch();
 
             System.out.println("Data seeded successfully!");
         } catch (SQLException e) {

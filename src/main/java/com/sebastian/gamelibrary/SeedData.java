@@ -3,10 +3,19 @@ package com.sebastian.gamelibrary;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SeedData {
     public static void main(String[] args){
         try (Connection conn = DatabaseConnection.connect()) {
+
+            Statement cleanupStmt = conn.createStatement();
+            cleanupStmt.execute("DELETE FROM games_genres");
+            cleanupStmt.execute("DELETE FROM games_platforms");
+            cleanupStmt.execute("DELETE FROM games");
+            cleanupStmt.execute("DELETE FROM genres");
+            cleanupStmt.execute("DELETE FROM platforms");
+
             String gameSql ="INSERT INTO games (title, release_year, rating) VALUES (?, ?, ?)";
             PreparedStatement gameStmt = conn.prepareStatement(gameSql);
             gameStmt.setString(1, "Silksong");
